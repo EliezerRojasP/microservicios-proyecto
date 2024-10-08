@@ -1,11 +1,12 @@
 package com.usuario_service.modelos;
 
 public class Moto {
-
+	
 	private String marca;
 	private String modelo;
 	private int usuarioId;
-
+	
+	
 	public String getMarca() {
 		return marca;
 	}

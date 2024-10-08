@@ -30,4 +30,22 @@ public class CarroService {
 	public List<Carro> findByUsuarioId(int usuarioId){
 		return carroRepository.findByUsuarioId(usuarioId);
 	}
+	
+	public Carro updateCarro(int id, Carro updatedCarro) {
+		return carroRepository.findById(id).map(carro -> {
+			
+			carro.setMarca(updatedCarro.getMarca());
+			carro.setModelo(updatedCarro.getModelo());
+
+			return carroRepository.save(carro);
+		}).orElse(null);
+	}
+
+	public boolean deleteCarro(int id) {
+		if (carroRepository.existsById(id)) {
+			carroRepository.deleteById(id);
+			return true;
+		}
+		return false;
+	}
 }

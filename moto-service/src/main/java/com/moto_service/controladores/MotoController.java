@@ -1,12 +1,15 @@
 package com.moto_service.controladores;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -52,5 +55,25 @@ public class MotoController {
 				return ResponseEntity.noContent().build();
 			}
 			return ResponseEntity.ok(motos);
+	}
+	
+	@PutMapping("/{id}")
+	public ResponseEntity<Moto> updateMoto(@PathVariable int id, @RequestBody Moto updatedMoto) {
+		Moto moto = motoService.updateMoto(id, updatedMoto);
+		if(moto != null) {
+			return ResponseEntity.ok(moto);
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
+	
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> deleteMoto(@PathVariable int id) {
+		try {
+			motoService.deleteMoto(id); // Si no existe, lanza una excepción
+			return ResponseEntity.noContent().build(); // Retorna 204 No Content
+		} catch (NoSuchElementException e) {
+			return ResponseEntity.notFound().build(); // Retorna 404 si no se encuentra la moto
+		}
 	}
 }

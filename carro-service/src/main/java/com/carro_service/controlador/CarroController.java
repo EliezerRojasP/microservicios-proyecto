@@ -4,9 +4,11 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -53,4 +55,25 @@ public class CarroController {
 		}
 		return ResponseEntity.ok(carros);
 	}
+	
+	@PutMapping("/{id}")
+	public ResponseEntity<Carro> updateCarro(@PathVariable int id, @RequestBody Carro updatedCarro) {
+		Carro carro = carroService.updateCarro(id, updatedCarro);
+		if (carro != null) {
+			return ResponseEntity.ok(carro);
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> deleteCarro(@PathVariable int id) {
+		boolean eliminado = carroService.deleteCarro(id);
+		if (eliminado) {
+			return ResponseEntity.noContent().build(); 
+		} else {
+			return ResponseEntity.notFound().build(); 
+		}
+	}
+
 }

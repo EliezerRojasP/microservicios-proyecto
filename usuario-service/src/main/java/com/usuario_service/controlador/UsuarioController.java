@@ -5,16 +5,19 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.carro_service.entidades.Carro;
 import com.usuario_service.entidades.Usuario;
-import com.usuario_service.modelos.Moto;
+import com.usuario_service.feignclients.CarroFeignClient;
+import com.moto_service.entidades.Moto;
 import com.usuario_service.servicio.UsuarioService;
 
 @RestController
@@ -89,5 +92,54 @@ public class UsuarioController {
 		return ResponseEntity.ok(resultado);
 	}
 	
+	@PutMapping("/carro/{carroId}")
+	public ResponseEntity<Carro> actualizarCarro(@PathVariable int carroId, @RequestBody Carro carroActualizado) {
+		Carro carroExistente = usuarioService.getCarroById(carroId);
+		if (carroExistente == null) {
+			return ResponseEntity.notFound().build();
+		}
 
+		carroExistente.setMarca(carroActualizado.getMarca());
+		carroExistente.setModelo(carroActualizado.getModelo());
+
+		Carro carroActualizadoEnBD = usuarioService.saveCarro(carroExistente.getUsuarioId(), carroExistente);
+		return ResponseEntity.ok(carroActualizadoEnBD);
+	}
+	
+	@PutMapping("/moto/{motoId}")
+	public ResponseEntity<Moto> actualizarMoto(@PathVariable int motoId, @RequestBody Moto motoActualizado){
+		Moto motoExistente = usuarioService.getMotoById(motoId);
+		if (motoExistente == null) {
+			return ResponseEntity.notFound().build();
+		}
+		
+		motoExistente.setMarca(motoActualizado.getMarca());
+		motoExistente.setModelo(motoActualizado.getModelo());
+		
+		Moto motoActualizadoEnBD = usuarioService.saveMoto(motoExistente.getUsuarioId(), motoExistente);
+		return ResponseEntity.ok(motoActualizadoEnBD);
+		
+	}
+	
+	@DeleteMapping("/carro/{carroId}")
+	public ResponseEntity<Void> eliminarCarro(@PathVariable int carroId){
+		try {
+			usuarioService.deleteCarro(carroId);
+			return ResponseEntity.noContent().build();
+		} catch (Exception e) {
+			return ResponseEntity.notFound().build();
+		}
+	}
+	
+	@DeleteMapping("/moto/{motoId}")
+	public ResponseEntity<Void> eliminarMoto(@PathVariable int motoId){
+		try {
+			usuarioService.deleteMoto(motoId);
+			return ResponseEntity.noContent().build();
+		} catch (Exception e) {
+			return ResponseEntity.notFound().build();
+		}
+	}
+	
+	
 }

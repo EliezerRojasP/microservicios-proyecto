@@ -1,6 +1,7 @@
 package com.moto_service.servicios;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,4 +32,21 @@ public class MotoService {
 		return motoRepository.findByUsuarioId(usuarioId);
 	}
 	
+	public Moto updateMoto(int id, Moto updatedMoto) {
+		return motoRepository.findById(id).map(moto -> {
+			
+			moto.setMarca(updatedMoto.getMarca());
+			moto.setModelo(updatedMoto.getModelo());
+			
+			return motoRepository.save(moto); 
+		}).orElse(null); 
+	}
+	
+	public void deleteMoto(int id) {
+		if (motoRepository.existsById(id)) {
+			motoRepository.deleteById(id);
+		} else {
+			throw new NoSuchElementException("La moto con el ID " + id + " no existe.");
+		}
+	}
 }

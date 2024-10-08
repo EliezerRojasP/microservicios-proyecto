@@ -14,6 +14,7 @@ public class Moto {
 
 	private String marca;
 	private String modelo;
+	
 	private int usuarioId;
 
 	// Getter y Setters
@@ -49,8 +50,9 @@ public class Moto {
 	public void setUsuarioId(int usuarioId) {
 		this.usuarioId = usuarioId;
 	}
-
+	
 	public Moto() {
 		super();
 	}
+
 }

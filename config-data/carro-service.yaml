@@ -1,17 +1,11 @@
 server:
-  port: ${PORT:${SERVER_PORT:0}}  # Usa un puerto dinámico o asignado externamente
-
-spring:
-  application:
-    name: carro-service  # Cambia a moto-service o carro-service para los otros
-
+  port: ${PORT:${SERVER_PORT:0}}
 eureka:
   client:
-    service-url:
-      default-zone: http://localhost:8761/eureka  # Apunta al servidor Eureka
-    register-with-eureka: true
     fetch-registry: true
-
-  instance:
-    instance-id: ${spring.application.name}:${server.port}  # ID único basado en nombre y puerto
-    prefer-ip-address: true  # Prefiere la dirección IP
+    register-with-eureka: true
+    service-url:
+      default-zone: http://localhost:8761/eureka
+    instance:
+      instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+      prefer-ip-address: true

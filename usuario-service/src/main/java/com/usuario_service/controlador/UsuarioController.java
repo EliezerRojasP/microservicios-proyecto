@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -100,6 +99,7 @@ public class UsuarioController {
 		return ResponseEntity.ok(resultado);
 	}
 	
+	@CircuitBreaker(name = "carrosCB", fallbackMethod = "fallBackUpdateCarro")
 	@PutMapping("/carro/{carroId}")
 	public ResponseEntity<Carro> actualizarCarro(@PathVariable int carroId, @RequestBody Carro carroActualizado) {
 		Carro carroExistente = usuarioService.getCarroById(carroId);
@@ -114,6 +114,7 @@ public class UsuarioController {
 		return ResponseEntity.ok(carroActualizadoEnBD);
 	}
 	
+	@CircuitBreaker(name = "motosCB", fallbackMethod = "fallBackUpdateMoto")
 	@PutMapping("/moto/{motoId}")
 	public ResponseEntity<Moto> actualizarMoto(@PathVariable int motoId, @RequestBody Moto motoActualizado){
 		Moto motoExistente = usuarioService.getMotoById(motoId);
@@ -129,6 +130,7 @@ public class UsuarioController {
 		
 	}
 	
+	@CircuitBreaker(name = "carrosCB", fallbackMethod = "fallBackDeleteCarro")
 	@DeleteMapping("/carro/{carroId}")
 	public ResponseEntity<Void> eliminarCarro(@PathVariable int carroId){
 		try {
@@ -139,6 +141,7 @@ public class UsuarioController {
 		}
 	}
 	
+	@CircuitBreaker(name = "motosCB", fallbackMethod = "fallBackDeleteMoto")
 	@DeleteMapping("/moto/{motoId}")
 	public ResponseEntity<Void> eliminarMoto(@PathVariable int motoId){
 		try {
@@ -152,25 +155,64 @@ public class UsuarioController {
 	
 	private ResponseEntity<List<Carro>> fallBackGetCarros(@PathVariable("usuarioId") int id,
 			RuntimeException exception) {
-		return new ResponseEntity("El usuario : " + id + "tiene los carros en el taller", HttpStatus.OK);
+		return new ResponseEntity(
+				"El usuario : " + id + " no puede visualizar los carros en este momento. Por favor, intenta más tarde.",
+				HttpStatus.OK);
 	}
 
 	private ResponseEntity<Carro> fallBackSaveCarro(@PathVariable("usuarioId") int id, @RequestBody Carro carro,
 			RuntimeException exception) {
-		return new ResponseEntity("El usuario : " + id + "no tiene dinero para los carros", HttpStatus.OK);
+		return new ResponseEntity(
+				"El usuario : " + id + " no puede guardar los carros en este momento. Por favor, intenta más tarde.",
+				HttpStatus.OK);
 	}
 
+	private ResponseEntity<Carro> fallBackUpdateCarro(@PathVariable("usuarioId") int id,
+			@RequestBody Carro carroActualizado, RuntimeException exception) {
+		return new ResponseEntity(
+				"El usuario : " + id + " no puede actualizar en este momento. Por favor, intenta más tarde.",
+				HttpStatus.OK);
+	}
+
+	private ResponseEntity<Void> fallBackDeleteCarro(@PathVariable("usuarioId") int id, RuntimeException exception) {
+		return new ResponseEntity(
+				"El usuario : " + id + " no puede eliminar en este momento. Por favor, intenta más tarde.",
+				HttpStatus.OK);
+	}
+	
+
 	private ResponseEntity<List<Moto>> fallBackGetMotos(@PathVariable("usuarioId") int id, RuntimeException exception) {
-		return new ResponseEntity("El usuario : " + id + "tiene las motos en el taller", HttpStatus.OK);
+		return new ResponseEntity(
+				"El usuario : " + id + " no puede visualizar las motos en este momento. Por favor, intenta más tarde.",
+				HttpStatus.OK);
 	}
 
 	private ResponseEntity<Moto> fallBackSaveMoto(@PathVariable("usuarioId") int id, @RequestBody Moto moto,
 			RuntimeException exception) {
-		return new ResponseEntity("El usuario : " + id + "no tiene dinero para los motos", HttpStatus.OK);
+		return new ResponseEntity(
+				"El usuario : " + id + " no puede guardar las motos en este momento. Por favor, intenta mas tarde.",
+				HttpStatus.OK);
+	}
+	
+	private ResponseEntity<Moto> fallBackUpdateMoto(@PathVariable("usuarioId") int id,
+			@RequestBody Moto motoActualizado, RuntimeException exception) {
+		return new ResponseEntity(
+				"El usuario : " + id + " no puede actualizar en este momento. Por favor, intenta más tarde.",
+				HttpStatus.OK);
+	}
+	
+	private ResponseEntity<Void> fallBackDeleteMoto(@PathVariable("usuarioId") int id, RuntimeException exception) {
+		return new ResponseEntity(
+				"El usuario : " + id + " no puede eliminar en este momento. Por favor, intenta más tarde.",
+				HttpStatus.OK);
 	}
 
-	private ResponseEntity<Map<String, Object>> fallBackGetTodos(@PathVariable("usuarioId") int id, RuntimeException exception) {
-		return new ResponseEntity("El usuario : " + id + "tiene las vehiculos en el taller", HttpStatus.OK);
+	private ResponseEntity<Map<String, Object>> fallBackGetTodos(@PathVariable("usuarioId") int id,
+			RuntimeException exception) {
+		return new ResponseEntity(
+				"El usuario : " + id
+						+ " no puede ver todos los vehiculos en este momento. Por favor, intenta mas tarde.",
+				HttpStatus.OK);
 	}
 	
 }

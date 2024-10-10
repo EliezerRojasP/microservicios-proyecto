@@ -8,6 +8,5 @@ spring:
           default-label: circuit-breaker
           uri: https://github.com/EliezerRojasP/microservicios-proyecto
           search-paths: config-data
-
   application:
     name: config-service

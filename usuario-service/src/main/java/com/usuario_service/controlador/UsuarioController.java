@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.carro_service.entidades.Carro;
 import com.usuario_service.entidades.Usuario;
-import com.usuario_service.feignclients.CarroFeignClient;
 import com.moto_service.entidades.Moto;
 import com.usuario_service.servicio.UsuarioService;
 

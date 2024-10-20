@@ -1,0 +1,75 @@
+services:
+  eureka-service:
+    image: eureka-service
+    build:
+      context: ./eureka-service
+      dockerfile: Dockerfile
+    ports:
+      - "8761:8761"
+    networks:
+      - spring-network
+
+  config-service:
+    image: config-service
+    build:
+      context: ./config-service
+      dockerfile: Dockerfile
+    ports:
+      - "8888:8888"
+    depends_on:
+      - eureka-service
+    networks:
+      - spring-network
+
+  gateway-service:
+    image: gateway-service
+    build:
+      context: ./gateway-service
+      dockerfile: Dockerfile
+    ports:
+      - "8890:8890"
+    depends_on:
+      - eureka-service
+      - config-service
+    networks:
+      - spring-network
+
+  carro-service:
+    image: carro-service
+    build:
+      context: ./carro-service
+      dockerfile: Dockerfile
+    ports:
+      - "8812:8812"
+    depends_on:
+      - eureka-service
+    networks:
+      - spring-network
+
+  moto-service:
+    image: moto-service
+    build:
+      context: ./moto-service
+      dockerfile: Dockerfile
+    ports:
+      - "8879:8879"
+    depends_on:
+      - eureka-service
+    networks:
+      - spring-network
+
+  usuario-service:
+    image: usuario-service
+    build:
+      context: ./usuario-service
+      dockerfile: Dockerfile
+    ports:
+      - "8801:8801"
+    depends_on:
+      - eureka-service
+    networks:
+      - spring-network
+
+networks:
+  spring-network:
+    driver: bridge

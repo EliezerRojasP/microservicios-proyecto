@@ -13,7 +13,7 @@ resilience4j.circuitbreaker:
     instances:
         carrosCB:
             registerHealthIndicator: true
-            slidingWindowSize: 10
+            slidingWindowSize: 10b
             permittedNumberOfCallsInHalfOpenState: 3
             slidingWindowType: TIME_BASED
             minimumNumberOfCalls: 4

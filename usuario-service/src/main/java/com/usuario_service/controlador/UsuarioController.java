@@ -6,6 +6,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,6 +30,19 @@ public class UsuarioController {
 	
 	@Autowired
 	private UsuarioService usuarioService;
+	
+	@GetMapping("/api/auth/success")
+    public String loginSuccess(@AuthenticationPrincipal OAuth2User principal) {
+        // Obtener el correo y otros datos del usuario autenticado
+        String email = principal.getAttribute("email");
+        String name = principal.getAttribute("name");
+
+        // Aquí puedes generar un token JWT para el usuario si es necesario
+        String jwtToken = "GenerarTokenAqui";  // Genera tu token JWT
+
+        // Devolver una respuesta JSON con el token o mensaje de éxito
+        return "Autenticación exitosa! Token JWT: " + jwtToken;
+    }
 	
 	@GetMapping
 	public ResponseEntity<List<Usuario>> listarUsuarios(){
@@ -52,7 +67,6 @@ public class UsuarioController {
 		Usuario nuevoUsuario = usuarioService.save(usuario);
 		return ResponseEntity.ok(nuevoUsuario);
 	}
-	
 	
 	@CircuitBreaker(name = "carrosCB", fallbackMethod = "fallBackGetCarros")
 	@GetMapping("/carros/{usuarioId}")

@@ -1,9 +1,15 @@
 package com.usuario_service.servicio;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -14,6 +20,9 @@ import com.usuario_service.feignclients.CarroFeignClient;
 import com.usuario_service.feignclients.MotoFeignClient;
 import com.moto_service.entidades.Moto;
 import com.usuario_service.repositorio.UsuarioRepository;
+
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 
 @Service
 public class UsuarioService {
@@ -29,7 +38,6 @@ public class UsuarioService {
 	
 	@Autowired
 	private MotoFeignClient motoFeignClient;
-	
 	
 	public List<Usuario> getAll() {
 		return usuarioRepository.findAll();
@@ -132,5 +140,30 @@ public class UsuarioService {
 		return resultado;
 	}
 
+	public Usuario registerOrLoginOAuthUser(String email, String name) {
+		Usuario user = usuarioRepository.findByEmail(email);
+		
+		if (user == null) {
+			user = new Usuario();
+			user.setEmail(email);
+			user.setNombre(name);
+			usuarioRepository.save(user);
+		}
+		return user;
+	}
 	
+	public String generateToken(String email) {
+		String SECRET_KEY = "";
+		byte[] keyBytes = SECRET_KEY.getBytes(StandardCharsets.UTF_8);
+		SecretKey secretKey = new SecretKeySpec(keyBytes, SignatureAlgorithm.HS256.getJcaName());
+		
+		return Jwts.builder()
+				.setSubject(email)
+				.setIssuedAt(new Date())
+				.setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
+				.signWith(SignatureAlgorithm.HS256, secretKey)
+				.compact();
+					
+	}
+
 }

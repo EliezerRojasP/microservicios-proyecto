@@ -7,5 +7,5 @@ import com.usuario_service.entidades.Usuario;
 
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
-
+	Usuario findByEmail(String email);
 }

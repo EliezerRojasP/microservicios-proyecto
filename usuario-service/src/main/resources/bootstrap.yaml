@@ -1,28 +1,29 @@
 spring:
   application:
-    name: usuario-service  
+    name: usuario-service
+
   cloud:
     config:
       enabled: true
-      uri: http://localhost:8081  
+      uri: http://localhost:8081  # Configuración del servidor de configuración
 
   security:
     oauth2:
       client:
         registration:
           google:
-            client-id: TU_CLIENT_ID  # Reemplaza con tu client ID de Google
-            client-secret: TU_CLIENT_SECRET  # Reemplaza con tu client secret de Google
-            scope: openid, profile, email
-            redirect-uri: "{baseUrl}/login/oauth2/code/google"
-            client-name: Google
+            client-id: ${OAUTH_GOOGLE_CLIENT_ID}  # Client ID entre comillas dobles
+            client-secret: ${OAUTH_GOOGLE_CLIENT_SECRET}  # Client secret entre comillas dobles
+            scope: openid, profile, email  # Scopes solicitados
+            redirect-uri: "{baseUrl}/login/oauth2/code/google"  # URI de redirección
+            client-name: Google  # Nombre del cliente
         provider:
           google:
-            authorization-uri: https://accounts.google.com/o/oauth2/auth
-            token-uri: https://oauth2.googleapis.com/token
-            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
-            jwk-set-uri: https://www.googleapis.com/oauth2/v3/certs
-            user-name-attribute: sub 
+            authorization-uri: https://accounts.google.com/o/oauth2/auth  # URI de autorización
+            token-uri: https://oauth2.googleapis.com/token  # URI para obtener el token
+            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo  # URI para obtener la información del usuario
+            jwk-set-uri: https://www.googleapis.com/oauth2/v3/certs  # Certificados públicos de Google para verificar el JWT
 
 
+ 
 

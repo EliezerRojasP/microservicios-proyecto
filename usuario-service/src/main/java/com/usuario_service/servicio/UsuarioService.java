@@ -153,7 +153,7 @@ public class UsuarioService {
 	}
 	
 	public String generateToken(String email) {
-		String SECRET_KEY = "";
+		String SECRET_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjMiLCJuYW1lIjoiZWxpZSIsImlhdCI6MTUxNjIzOTAyMn0.jAyqMN8BkaQMlQDpGo6eeI94AmmNR9uSdxgwlqiZLa0";
 		byte[] keyBytes = SECRET_KEY.getBytes(StandardCharsets.UTF_8);
 		SecretKey secretKey = new SecretKeySpec(keyBytes, SignatureAlgorithm.HS256.getJcaName());
 		

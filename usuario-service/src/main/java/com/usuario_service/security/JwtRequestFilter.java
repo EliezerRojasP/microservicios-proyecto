@@ -19,7 +19,7 @@ import java.util.Date;
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 
-    private String SECRET_KEY = "";  // Almacenar en lugar seguro
+    private String SECRET_KEY = "${JWT_SECRET}";  // Almacenar en lugar seguro
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)

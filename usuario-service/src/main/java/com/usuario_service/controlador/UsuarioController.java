@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.carro_service.entidades.Carro;
-import com.usuario_service.entidades.Usuario;
 import com.moto_service.entidades.Moto;
+import com.usuario_service.entidades.Usuario;
 import com.usuario_service.servicio.UsuarioService;
 
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;

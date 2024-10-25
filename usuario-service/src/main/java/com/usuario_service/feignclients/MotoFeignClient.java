@@ -29,4 +29,5 @@ public interface MotoFeignClient {
 	
 	@DeleteMapping("/moto/{id}")
 	void deleteMoto(@PathVariable("id") int id);
+
 }

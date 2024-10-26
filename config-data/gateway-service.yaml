@@ -18,26 +18,27 @@ spring:
           enabled: true
       routes:
         - id: usuario-service
-          uri: lb://usuario-service  
+          uri: lb://USUARIO-SERVICE
           predicates:
             - Path=/usuario/**
           filters:
             - AuthFilter
         - id: carro-service
-          uri: lb://carro-service
+          uri: lb://CARRO-SERVICE
           predicates:
             - Path=/carro/**
         - id: moto-service
-          uri: lb://moto-service
+          uri: lb://MOTO-SERVICE
           predicates:
             - Path=/moto/**
         - id: auth-service
-          uri: lb://auth-service
+          uri: lb://AUTH-SERVICE
           predicates:
             - Path=/auth/**
-
+    
 logging:
   level:
     org.springframework.cloud.gateway: DEBUG
+
 
      

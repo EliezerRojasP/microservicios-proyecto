@@ -29,7 +29,7 @@ services:
       context: ./gateway-service
       dockerfile: Dockerfile
     ports:
-      - "8080:8080"  # Cambiado para que coincida con el puerto original del servicio gateway
+      - "8080:8080"
     depends_on:
       - eureka-service
       - config-service
@@ -42,9 +42,11 @@ services:
       context: ./carro-service
       dockerfile: Dockerfile
     ports:
-      - "8083:8083"  # Cambiado para coincidir con el puerto original
+      - "8083:8083"
     depends_on:
       - eureka-service
+    volumes:
+      - ~/.m2:/root/.m2  # Solo en carro-service para el repositorio Maven local
     networks:
       - spring-network
 
@@ -54,9 +56,11 @@ services:
       context: ./moto-service
       dockerfile: Dockerfile
     ports:
-      - "8084:8084"  # Cambiado para coincidir con el puerto original
+      - "8084:8084"
     depends_on:
       - eureka-service
+    volumes:
+      - ~/.m2:/root/.m2  # Solo en moto-service para el repositorio Maven local
     networks:
       - spring-network
 
@@ -66,7 +70,7 @@ services:
       context: ./usuario-service
       dockerfile: Dockerfile
     ports:
-      - "8085:8085"  # Cambiado para coincidir con el puerto original
+      - "8085:8085"
     depends_on:
       - eureka-service
     networks:
@@ -78,7 +82,7 @@ services:
       context: ./auth-service
       dockerfile: Dockerfile
     ports:
-      - "8082:8082"  # Puerto para el servicio auth-service
+      - "8082:8082"
     depends_on:
       - eureka-service
     networks:
@@ -87,3 +91,4 @@ services:
 networks:
   spring-network:
     driver: bridge
+

@@ -7,8 +7,21 @@ spring:
       uri: http://localhost:8081
 
 jwt:
-  secret: "${JWT_SECRET:defaultSecret}"
+  secret: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjMiLCJuYW1lIjoiZWxpZSIsImlhdCI6MTUxNjIzOTAyMn0.jAyqMN8BkaQMlQDpGo6eeI94AmmNR9uSdxgwlqiZLa0" 
   expiration: 3600000
 
-           
+admin-paths:
+  paths:
+    - uri: "/usuario/carro/**"
+      method: "POST"
+    - uri: "/usuario/moto/**"
+      method: "POST"
+    - uri: "/usuario/carro/**"
+      method: "PUT"
+    - uri: "/usuario/moto/**"
+      method: "PUT"
+    - uri: "/usuario/carro/**"
+      method: "DELETE"
+    - uri: "/usuario/moto/**"
+      method: "DELETE"
 

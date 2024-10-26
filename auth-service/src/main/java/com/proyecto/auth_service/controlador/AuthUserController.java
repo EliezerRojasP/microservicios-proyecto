@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.proyecto.auth_service.entidades.AuthUser;
 import com.proyecto.auth_service.modelos.AuthUserDto;
+import com.proyecto.auth_service.modelos.RequestDto;
 import com.proyecto.auth_service.modelos.TokenDto;
 import com.proyecto.auth_service.service.AuthUserService;
+
 
 @RestController
 @RequestMapping("/auth")
@@ -19,6 +21,7 @@ public class AuthUserController {
 	
 	@Autowired
 	AuthUserService authUserService;
+
 	
 	@PostMapping("/token")
     public ResponseEntity<TokenDto> token(@RequestBody AuthUserDto dto) {
@@ -29,12 +32,15 @@ public class AuthUserController {
     }
 	
 	@PostMapping("/validate")
-	public ResponseEntity<TokenDto> validate (@RequestParam String token){
-		TokenDto tokenDto = authUserService.validate(token);
-		if (tokenDto == null)
-			return ResponseEntity.badRequest().build();
-		return ResponseEntity.ok(tokenDto);
+	public ResponseEntity<TokenDto> validate(@RequestParam String token, @RequestBody RequestDto dto) {
+	    TokenDto tokenDto = authUserService.validate(token, dto);
+	    if (tokenDto == null) {
+	        return ResponseEntity.badRequest().build();
+	    }
+	    return ResponseEntity.ok(tokenDto);
 	}
+
+
 	
 	@PostMapping("/create")
 	public ResponseEntity<AuthUser> create(@RequestBody AuthUserDto dto) {

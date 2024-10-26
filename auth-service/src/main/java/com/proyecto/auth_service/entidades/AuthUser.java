@@ -15,13 +15,15 @@ public class AuthUser {
     @Column(unique = true)
     private String userName;
     private String password;
+    private String role;
 
     public AuthUser() {
     }
 
-    public AuthUser(String userName, String password) {
+    public AuthUser(String userName, String password, String role) {
         this.userName = userName;
         this.password = password;
+        this.role = role;
     }
 
     public Long getId() {
@@ -47,5 +49,16 @@ public class AuthUser {
     public void setPassword(String password) {
         this.password = password;
     }
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+    
+   
+    
 }
 

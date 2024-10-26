@@ -2,8 +2,8 @@ package com.proyecto.auth_service.modelos;
 
 import jakarta.validation.constraints.NotBlank;
 
-public class AuthUserDto {
-    @NotBlank
+public class NewUserDto {
+	@NotBlank
     private String userName;
     
     @NotBlank
@@ -12,7 +12,7 @@ public class AuthUserDto {
     @NotBlank
     private String role;
     
-    public AuthUserDto() {
+    public NewUserDto() {
     }
 
     public String getUserName() {
@@ -41,5 +41,3 @@ public class AuthUserDto {
        
 	
 }
-
-

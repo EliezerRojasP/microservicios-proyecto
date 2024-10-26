@@ -55,5 +55,4 @@ public class AuthUserService {
 		return new TokenDto(token);
 	}
 	
-	
 }

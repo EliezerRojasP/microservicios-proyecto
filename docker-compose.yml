@@ -14,10 +14,12 @@ services:
     build:
       context: ./config-service
       dockerfile: Dockerfile
+    environment:
+      - SPRING_CLOUD_CONFIG_SERVER_NATIVE_SEARCH_LOCATIONS=file:/app/config-data
+    volumes:
+      - ./config-data:/app/config-data  # Mapea la carpeta local al contenedor
     ports:
       - "8081:8081"
-    depends_on:
-      - eureka-service
     networks:
       - spring-network
 

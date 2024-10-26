@@ -15,7 +15,7 @@ services:
       context: ./config-service
       dockerfile: Dockerfile
     ports:
-      - "8888:8888"
+      - "8081:8081"
     depends_on:
       - eureka-service
     networks:
@@ -27,7 +27,7 @@ services:
       context: ./gateway-service
       dockerfile: Dockerfile
     ports:
-      - "8890:8890"
+      - "8080:8080"  # Cambiado para que coincida con el puerto original del servicio gateway
     depends_on:
       - eureka-service
       - config-service
@@ -40,7 +40,7 @@ services:
       context: ./carro-service
       dockerfile: Dockerfile
     ports:
-      - "8812:8812"
+      - "8083:8083"  # Cambiado para coincidir con el puerto original
     depends_on:
       - eureka-service
     networks:
@@ -52,7 +52,7 @@ services:
       context: ./moto-service
       dockerfile: Dockerfile
     ports:
-      - "8879:8879"
+      - "8084:8084"  # Cambiado para coincidir con el puerto original
     depends_on:
       - eureka-service
     networks:
@@ -64,7 +64,19 @@ services:
       context: ./usuario-service
       dockerfile: Dockerfile
     ports:
-      - "8801:8801"
+      - "8085:8085"  # Cambiado para coincidir con el puerto original
+    depends_on:
+      - eureka-service
+    networks:
+      - spring-network
+
+  auth-service:
+    image: auth-service
+    build:
+      context: ./auth-service
+      dockerfile: Dockerfile
+    ports:
+      - "8082:8082"  # Puerto para el servicio auth-service
     depends_on:
       - eureka-service
     networks:

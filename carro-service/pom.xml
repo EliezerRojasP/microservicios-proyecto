@@ -69,7 +69,7 @@
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>moto-service</groupId>
+			<groupId>com.proyecto</groupId>
 			<artifactId>moto-service</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>

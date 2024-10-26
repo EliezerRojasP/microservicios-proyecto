@@ -39,7 +39,7 @@ public class AuthUserService {
         }
     }
 
-    public TokenDto login(AuthUserDto dto) {
+    public TokenDto Token(AuthUserDto dto) {
         try {
             AuthUser user = authUserRepository.findByUserName(dto.getUserName()).orElse(null);
             if (user == null) {

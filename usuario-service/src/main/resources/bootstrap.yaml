@@ -6,14 +6,5 @@ spring:
       enabled: true
       uri: http://localhost:8081
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "prometheus,health,info"
-  prometheus:
-    metrics:
-      export:
-        enabled: true
 
 

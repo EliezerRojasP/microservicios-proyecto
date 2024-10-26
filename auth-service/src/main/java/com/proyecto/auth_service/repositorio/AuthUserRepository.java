@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import com.proyecto.auth_service.entidades.AuthUser;
 
 @Repository
-public interface AuthUserRepository extends JpaRepository<AuthUser, Integer>{
-	Optional<AuthUser> findByUserName(String username);
+public interface AuthUserRepository extends JpaRepository<AuthUser, Long> {
+    Optional<AuthUser> findByUserName(String userName);
 }

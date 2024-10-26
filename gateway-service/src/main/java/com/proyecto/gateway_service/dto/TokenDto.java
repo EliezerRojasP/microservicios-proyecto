@@ -4,19 +4,22 @@ public class TokenDto {
 	
 	private String token;
 
-	public String getToken() {
-		return token;
-	}
+    // Constructor sin argumentos
+    public TokenDto() {
+    }
 
-	public void setToken(String token) {
-		this.token = token;
-	}
+    // Constructor con argumentos
+    public TokenDto(String token) {
+        this.token = token;
+    }
 
-	public TokenDto(String token) {
-		super();
-		this.token = token;
-	}
-	
-	
-	
+    // Getter
+    public String getToken() {
+        return token;
+    }
+
+    // Setter
+    public void setToken(String token) {
+        this.token = token;
+    }
 }

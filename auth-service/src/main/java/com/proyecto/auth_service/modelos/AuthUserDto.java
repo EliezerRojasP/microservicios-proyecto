@@ -1,19 +1,17 @@
 package com.proyecto.auth_service.modelos;
 
-public class AuthUserDto {
+import jakarta.validation.constraints.NotBlank;
 
+public class AuthUserDto {
+    @NotBlank
     private String userName;
+    
+    @NotBlank
     private String password;
 
     public AuthUserDto() {
     }
 
-    public AuthUserDto(String userName, String password) {
-        this.userName = userName;
-        this.password = password;
-    }
-
-    // Getters y Setters
     public String getUserName() {
         return userName;
     }
@@ -30,4 +28,5 @@ public class AuthUserDto {
         this.password = password;
     }
 }
+
 

@@ -14,7 +14,8 @@ public class AuthUser {
     private String userName;
     private String password;
 
-    public AuthUser() {}
+    public AuthUser() {
+    }
 
     public AuthUser(int id, String userName, String password) {
         this.id = id;
@@ -46,12 +47,13 @@ public class AuthUser {
         this.password = password;
     }
 
-    // Método builder
+    
+	// Implementación manual del patrón Builder
     public static AuthUserBuilder builder() {
         return new AuthUserBuilder();
     }
 
-    // Clase builder
+    // Clase estática para construir AuthUser
     public static class AuthUserBuilder {
         private int id;
         private String userName;

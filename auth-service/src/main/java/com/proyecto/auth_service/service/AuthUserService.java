@@ -1,7 +1,5 @@
 package com.proyecto.auth_service.service;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -39,7 +37,7 @@ public class AuthUserService {
         }
     }
 
-    public TokenDto login(AuthUserDto dto) {
+    public TokenDto Token(AuthUserDto dto) {
         try {
             AuthUser user = authUserRepository.findByUserName(dto.getUserName()).orElse(null);
             if (user == null) {

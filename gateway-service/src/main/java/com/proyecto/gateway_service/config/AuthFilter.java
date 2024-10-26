@@ -22,25 +22,31 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
         super(Config.class);
         this.webClient = webClient;
     }
+    
     @Override
     public GatewayFilter apply(Config config) {
-        return (((exchange, chain) -> {
-            if(!exchange.getRequest().getHeaders().containsKey(HttpHeaders.AUTHORIZATION))
+        return (exchange, chain) -> {
+            if (!exchange.getRequest().getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
+                return onError(exchange, HttpStatus.UNAUTHORIZED);
+            }
+
+            String tokenHeader = exchange.getRequest().getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
+            if (tokenHeader == null || !tokenHeader.startsWith("Bearer ")) {
                 return onError(exchange, HttpStatus.BAD_REQUEST);
-            String tokenHeader = exchange.getRequest().getHeaders().get(HttpHeaders.AUTHORIZATION).get(0);
-            String [] chunks = tokenHeader.split(" ");
-            if(chunks.length != 2 || !chunks[0].equals("Bearer"))
-                return onError(exchange, HttpStatus.BAD_REQUEST);
+            }
+
+            String token = tokenHeader.substring(7);
+
             return webClient.build()
                     .post()
-                    .uri("http://auth-service/auth/validate?token=" + chunks[1])
-                    .retrieve().bodyToMono(TokenDto.class)
-                    .map(t -> {
-                        t.getToken();
-                        return exchange;
-                    }).flatMap(chain::filter);
-        }));
+                    .uri("http://auth-service/auth/validate")
+                    .bodyValue(token)
+                    .retrieve()
+                    .bodyToMono(TokenDto.class)
+                    .flatMap(t -> chain.filter(exchange));
+        };
     }
+
 
     public Mono<Void> onError(ServerWebExchange exchange, HttpStatus status){
         ServerHttpResponse response = exchange.getResponse();

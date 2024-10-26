@@ -14,17 +14,14 @@ public class AuthUser {
     private String userName;
     private String password;
 
-    // Constructor sin argumentos
     public AuthUser() {}
 
-    // Constructor con argumentos
     public AuthUser(int id, String userName, String password) {
         this.id = id;
         this.userName = userName;
         this.password = password;
     }
 
-    // Getters y Setters
     public int getId() {
         return id;
     }

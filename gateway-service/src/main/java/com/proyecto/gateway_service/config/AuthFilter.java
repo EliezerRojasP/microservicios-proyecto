@@ -19,38 +19,40 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config>{
 	
 	private WebClient.Builder webClient;
 	
-	public AuthFilter(WebClient.Builder webBuilder) {
-		super(Config.class);
-		this.webClient = webClient;
-	}
+	public AuthFilter(WebClient.Builder webClientBuilder) {
+        super(Config.class);
+        this.webClient = webClientBuilder;
+    }
 	
-	@Override
-	public GatewayFilter apply(Config config) {
-	    return (exchange, chain) -> {
-	        if (!exchange.getRequest().getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
-	            return onError(exchange, HttpStatus.BAD_REQUEST);
-	        }
-	        
-	        String tokenHeader = exchange.getRequest().getHeaders().get(HttpHeaders.AUTHORIZATION).get(0);
-	        String[] chunks = tokenHeader.split(" ");
-	        
-	        if (chunks.length != 2 || !chunks[0].equals("Bearer")) {
-	            return onError(exchange, HttpStatus.BAD_REQUEST);
-	        }
+	 @Override
+	    public GatewayFilter apply(Config config) {
+	        return (exchange, chain) -> {
+	            if (!exchange.getRequest().getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
+	                return onError(exchange, HttpStatus.UNAUTHORIZED);
+	            }
 
-	        return webClient.build()
-	                .post()
-	                .uri(uriBuilder -> uriBuilder
-	                    .scheme("http")
-	                    .host("auth-service")
-	                    .path("/auth/validate")
-	                    .queryParam("tokenHeader", chunks[1])
-	                    .build())
-	                .retrieve()
-	                .bodyToMono(TokenDto.class)
-	                .flatMap(tokenDto -> chain.filter(exchange));
+	            
+	            String tokenHeader = exchange.getRequest().getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
+	            if (tokenHeader == null || !tokenHeader.startsWith("Bearer ")) {
+	                return onError(exchange, HttpStatus.BAD_REQUEST);
+	            }
+
+	            String token = tokenHeader.substring(7); 
+
+	     
+	            return webClient.build()
+	                    .post()
+	                    .uri("http://auth-service/auth/validate")
+	                    .bodyValue(new TokenDto(token))
+	                    .retrieve()
+	                    .bodyToMono(TokenDto.class)
+	                    .flatMap(tokenDto -> {
+	                
+	                        return chain.filter(exchange);
+	                    })
+	                    .onErrorResume(error -> onError(exchange, HttpStatus.FORBIDDEN));
 	        };
-	}
+	    }
 
 	
 	public Mono<Void> onError(ServerWebExchange exchange, HttpStatusCode status) {

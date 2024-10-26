@@ -11,6 +11,12 @@ public class TokenDto {
 	public void setToken(String token) {
 		this.token = token;
 	}
+
+	public TokenDto(String token) {
+		super();
+		this.token = token;
+	}
+	
 	
 	
 }

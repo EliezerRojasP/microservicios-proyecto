@@ -21,6 +21,8 @@ spring:
           uri: lb://usuario-service  
           predicates:
             - Path=/usuario/**
+          filters:
+            - name: AuthFilter
         - id: carro-service
           uri: lb://carro-service
           predicates:
@@ -37,5 +39,6 @@ spring:
 logging:
   level:
     org.springframework.cloud.gateway: DEBUG
+
 
      
